@@ -7,6 +7,8 @@ from wtforms.validators import DataRequired
 import numpy as np
 from datetime import datetime, timezone
 
+from .db import Submission, db
+
 
 dashboard = Blueprint("dashboard", __name__)
 
@@ -32,7 +34,12 @@ class SubmissionForm(FlaskForm):
 
 @dashboard.route("/")
 def index():
-    return render_template("index.html")
+    submissions = (
+        db.session.query(Submission)
+        .order_by(Submission.score.desc(), Submission.timestamp)
+        .limit(50)
+    )
+    return render_template("index.html", submissions=submissions)
 
 
 @dashboard.route("/submission", methods=["GET", "POST"])
@@ -42,11 +49,24 @@ def submission():
         file_storage = form.submission.data
         group_name = form.group_name.data
 
-        timestamp = datetime.now(timezone.utc).isoformat()
-        name = f"submission_{group_name}_{timestamp}.npy"
-        path = current_app.config['UPLOAD_PATH'] / group_name / name
+        now = datetime.now(timezone.utc)
+        timestamp = now.isoformat()
+
+        base = current_app.config['UPLOAD_PATH']
+
+        name = secure_filename(f"submission_{group_name}_{timestamp}.npy")
+        path = base / secure_filename(group_name) / name
 
         path.parent.mkdir(exist_ok=True, parents=True)
         file_storage.save(path)
+
+        submission = Submission(
+            group_name=group_name,
+            filename=str(path.relative_to(base)),
+            timestamp=now,
+        )
+        db.session.add(submission)
+        db.session.commit()
+
         return redirect(url_for("dashboard.index"))
     return render_template("submission.html", form=form)

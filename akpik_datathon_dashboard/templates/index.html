@@ -2,4 +2,34 @@
 
 {% block main %}
 <h1>Welcome to the AKPIK Datathon 2023</h1>
+
+
+<h2 class="mt-3">
+  Score Board
+  <a class="btn btn-primary" href="{{ url_for("dashboard.submission")}} ">Subission</a>
+</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Group</th>
+      <th scope="col">Time</th>
+      <th scope="col">Score</th>
+    </tr>
+  </thead>
+  {% for submission in submissions %}
+  <tr>
+    <th scope="row">{{ loop.index }}</th>
+    <td>{{ submission.group_name }}</td>
+    <td>{{ submission.timestamp.isoformat() }}</td>
+    <td>
+      {% if submission.score is not none %}
+        {{ submission.score }}
+      {% else %}
+        Awaiting scoring...
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
 {% endblock %}

@@ -10,4 +10,8 @@ class Config:
     SECRET_KEY = os.environ["AKPIK_SECRET_KEY"]
     SESSION_COOKIE_SECURE = True
     USE_HTTPS = os.getenv("AKPIK_USE_HTTPS", "").lower() == "true"
+
+    # submissions are stored here
     UPLOAD_PATH = Path(os.getenv("AKPIK_UPLOAD_PATH", "submissions")).absolute()
+
+    SQLALCHEMY_DATABASE_URI = os.environ["AKPIK_DATABASE_URI"]
