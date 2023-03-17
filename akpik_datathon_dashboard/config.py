@@ -14,6 +14,5 @@ class Config:
     # submissions are stored here
     UPLOAD_PATH = Path(os.getenv("AKPIK_UPLOAD_PATH", "submissions")).absolute()
 
-    SQLALCHEMY_DATABASE_URI = os.environ["AKPIK_DATABASE_URI"]
-
+    SQLALCHEMY_DATABASE_URI = os.getenv("AKPIK_DATABASE_URI", "sqlite:///akpik23.sqlite")
     REDIS_URL = os.getenv("AKPIK_REDIS_URL", "redis://localhost")

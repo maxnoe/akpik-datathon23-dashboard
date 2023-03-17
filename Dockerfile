@@ -14,7 +14,7 @@ RUN pip install poetry==1.3.1
 WORKDIR /home/akpik/
 
 # this will be our startup script
-COPY --chown=akpik:akpik run.sh .
+COPY --chown=akpik:akpik run.sh celery_worker.py .
 
 # migrations are needed at startup
 COPY --chown=akpik:akpik migrations migrations

@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    env_file: ".env"
+    environment:
+      AKPIK_REDIS_URL: "redis://redis"
+      AKPIK_DATABASE_URI: "sqlite:////data/akpik23.sqlite"
+    volumes:
+      - "./data:/data"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    command: ["celery", "-A", "celery_worker", "worker", "--loglevel=info"]
+    env_file: ".env"
+    environment:
+      AKPIK_REDIS_URL: "redis://redis"
+      AKPIK_DATABASE_URI: "sqlite:////data/akpik23.sqlite"
+    volumes:
+      - "./data:/data"
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: "redis:alpine"
