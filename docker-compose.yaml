@@ -8,7 +8,7 @@ services:
     environment:
       AKPIK_REDIS_URL: "redis://redis"
       AKPIK_DATABASE_URI: "sqlite:////data/akpik23.sqlite"
-      AKPIK_UPLOAD_PATH: "/data/submissions"
+      AKPIK_DATA_PATH: "/data/submissions"
     volumes:
       - "./data:/data"
     depends_on:
@@ -21,7 +21,7 @@ services:
     environment:
       AKPIK_REDIS_URL: "redis://redis"
       AKPIK_DATABASE_URI: "sqlite:////data/akpik23.sqlite"
-      AKPIK_UPLOAD_PATH: "/data/submissions"
+      AKPIK_DATA_PATH: "/data/submissions"
     volumes:
       - "./data:/data"
     depends_on:

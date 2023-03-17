@@ -6,7 +6,7 @@
 
 <h2 class="mt-3">
   Score Board
-  <a class="btn btn-primary" href="{{ url_for("dashboard.submission")}} ">Subission</a>
+  <a class="btn btn-primary" href="{{ url_for("dashboard.submission")}} ">Submission Upload</a>
 </h2>
 <table class="table">
   <thead>
@@ -24,7 +24,7 @@
     <td>{{ submission.timestamp.isoformat() }}</td>
     <td>
       {% if submission.score is not none %}
-        {{ submission.score }}
+        {{ '%.4f' | format(submission.score) }}
       {% else %}
         Awaiting scoring...
       {% endif %}
@@ -32,4 +32,10 @@
   </tr>
   {% endfor %}
 </table>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    setTimeout(() => window.location.reload(1), 5000);
+  </script>
 {% endblock %}

@@ -22,6 +22,8 @@ class SubmissionForm(FlaskForm):
         file_storage = submission.data
         try:
             data = np.load(file_storage)
+            # seek back to start, otherwise stored file will be empty
+            file_storage.seek(0)
         except Exception as e:
             raise ValidationError(f"Error loading data: {e}")
 
@@ -30,6 +32,7 @@ class SubmissionForm(FlaskForm):
 
         if data.shape != (10000, ):
             raise ValidationError(f"Data must have shape (10000, ), got {data.shape}")
+
 
 
 
@@ -53,7 +56,7 @@ def submission():
         now = datetime.now(timezone.utc)
         timestamp = now.isoformat()
 
-        base = current_app.config['UPLOAD_PATH']
+        base = current_app.config['DATA_PATH']
 
         name = secure_filename(f"submission_{group_name}_{timestamp}.npy")
         path = base / secure_filename(group_name) / name
