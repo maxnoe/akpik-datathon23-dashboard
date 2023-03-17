@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 
@@ -10,7 +12,10 @@ from .tasks import celery_init_app
 def create_app(config=Config):
     app = Flask(__name__)
     app.config.from_object(config)
-    app.register_blueprint(dashboard)
+
+    
+    basepath = os.environ.get('AKPIK_BASEPATH', '')
+    app.register_blueprint(dashboard, url_prefix=basepath)
     db.init_app(app)
     Migrate(app, db)
 
