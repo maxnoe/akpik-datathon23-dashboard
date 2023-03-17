@@ -59,7 +59,7 @@ def submission():
         base = current_app.config['DATA_PATH']
 
         name = secure_filename(f"submission_{group_name}_{timestamp}.npy")
-        path = base / secure_filename(group_name) / name
+        path = base / "submissions" / secure_filename(group_name) / name
 
         path.parent.mkdir(exist_ok=True, parents=True)
         file_storage.save(path)
