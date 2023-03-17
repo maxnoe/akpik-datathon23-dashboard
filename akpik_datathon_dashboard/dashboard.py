@@ -8,6 +8,7 @@ import numpy as np
 from datetime import datetime, timezone
 
 from .db import Submission, db
+from .tasks import score_submission
 
 
 dashboard = Blueprint("dashboard", __name__)
@@ -67,6 +68,8 @@ def submission():
         )
         db.session.add(submission)
         db.session.commit()
+
+        score_submission.delay(submission.id)
 
         flash("Submission added!", category="success")
         return redirect(url_for("dashboard.index"))

@@ -1,5 +1,8 @@
 from flask import Flask
-from celery import Celery, Task
+from celery import Celery, Task, shared_task
+import random
+
+from .db import Submission, db
 
 
 def celery_init_app(app: Flask) -> Celery:
@@ -9,7 +12,18 @@ def celery_init_app(app: Flask) -> Celery:
                 return self.run(*args, **kwargs)
 
     celery_app = Celery(app.name, task_cls=FlaskTask)
-    celery_app.config_from_object(app.config["CELERY"])
+    celery_app.conf.broker_url = app.config["REDIS_URL"]
     celery_app.set_default()
     app.extensions["celery"] = celery_app
     return celery_app
+
+
+@shared_task()
+def score_submission(submission_id):
+    submission = db.session.get(Submission, submission_id)
+
+    # yes, we just draw a random number ;) Fair
+    submission.score = random.random()
+
+    db.session.add(submission)
+    db.session.commit()
