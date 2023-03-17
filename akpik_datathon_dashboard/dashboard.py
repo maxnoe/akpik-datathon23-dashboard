@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, redirect, render_template, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, ValidationError
 from werkzeug.utils import secure_filename
@@ -68,5 +68,6 @@ def submission():
         db.session.add(submission)
         db.session.commit()
 
+        flash("Submission added!", category="success")
         return redirect(url_for("dashboard.index"))
     return render_template("submission.html", form=form)
