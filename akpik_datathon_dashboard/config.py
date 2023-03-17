@@ -17,3 +17,6 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("AKPIK_DATABASE_URI", "sqlite:///akpik23.sqlite")
     REDIS_URL = os.getenv("AKPIK_REDIS_URL", "redis://localhost")
     RANDOM_SEED = int(os.getenv("AKPIK_RANDOM_SEED", 0))
+
+    # limit upload size to 100 kb
+    MAX_CONTENT_LENGTH = 100 * 1024

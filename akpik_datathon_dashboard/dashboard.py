@@ -20,6 +20,11 @@ class SubmissionForm(FlaskForm):
 
     def validate_submission(self, submission: FileField):
         file_storage = submission.data
+        magic_bytes = file_storage.read(6)
+        file_storage.seek(0)
+        if magic_bytes != b'\x93NUMPY':
+            raise ValidationError("You must upload a file created with numpy.save")
+
         try:
             data = np.load(file_storage)
             # seek back to start, otherwise stored file will be empty
