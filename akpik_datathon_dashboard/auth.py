@@ -59,7 +59,7 @@ def login():
 @auth.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect(url_for("dashboard.index"))
 
 
 @login_manager.unauthorized_handler
