@@ -44,7 +44,9 @@ class SubmissionForm(FlaskForm):
 def request_entity_too_large(error):
     flash(
         "Your upload is too large."
-        "Only upload the *indices* stored with the <pre>export_submission</pre> function",
+        " Only upload the <em>indices</em> of the training set"
+        ", stored with the <code>export_submission</code> function."
+        " The expected filesize is 80kB.",
         category="danger",
     )
     return redirect(url_for("dashboard.submission"))
