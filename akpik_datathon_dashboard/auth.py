@@ -44,7 +44,7 @@ def login():
 
             if user is None or not form.password.data == current_app.config["ADMIN_PASSWORD"]:
                 flash("Invalid user or password", "danger")
-                abort(401)
+                return render_template("login.html", form=form), 401
 
             login_user(user)
             return redirect(url_for(request.args.get("next", "admin.admin_page")))
