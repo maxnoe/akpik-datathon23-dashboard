@@ -29,7 +29,7 @@
   <tr>
     <th scope="row">{{ loop.index }}</th>
     <td>{{ submission.group_name }}</td>
-    <td>{{ submission.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</td>
+    <td>{{ submission.timestamp.replace(tzinfo=utc).astimezone(timezone).strftime("%Y-%m-%d %H:%M:%S") }}</td>
     <td>
       {% if submission.score is not none %}
         {{ '%.4f' | format(submission.score) }}

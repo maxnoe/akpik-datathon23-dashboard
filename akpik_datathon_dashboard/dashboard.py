@@ -7,6 +7,7 @@ from wtforms import StringField
 from wtforms.validators import DataRequired
 import numpy as np
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from .db import Submission, Group, db
 from .tasks import score_submission
@@ -65,7 +66,8 @@ def index():
         .order_by(Submission.score.desc(), Submission.timestamp)
         .limit(50)
     )
-    return render_template("index.html", submissions=submissions)
+    tz = ZoneInfo(current_app.config["TIMEZONE"])
+    return render_template("index.html", submissions=submissions, timezone=tz, utc=timezone.utc)
 
 
 @dashboard.route("/submission/", methods=["GET", "POST"])

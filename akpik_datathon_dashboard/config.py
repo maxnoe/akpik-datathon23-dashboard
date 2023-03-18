@@ -23,3 +23,5 @@ class Config:
 
     ADMIN_USER = os.getenv("AKPIK_ADMIN_USER", "admin")
     ADMIN_PASSWORD = os.environ["AKPIK_ADMIN_PASSWORD"]
+
+    TIMEZONE = os.getenv("AKPIK_TIMEZONE", "Europe/Berlin")
