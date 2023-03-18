@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-<h1>AKPIK Datathon 2023 – Submission</h1>
+<h1>AKPIK Datathon 2023 – Login</h1>
 
 {% for field, errors in form.errors.items() %}
 <div class="alert alert-danger">
@@ -9,16 +9,16 @@
 </div>
 {% endfor %}
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST">
   {{ form.hidden_tag() }}
   <div>
-  {{ form.token.label }} {{ form.token(class_="form-control") }}
+  {{ form.username.label }} {{ form.username(class_="form-control") }}
   </div>
   <div class="mt-3">
-  {{ form.submission.label }} {{ form.submission(class_="form-control") }}
+  {{ form.password.label }} {{ form.password(class_="form-control") }}
   </div>
   <div class="mt-3">
-    <input class="btn btn-primary" type="submit" value="Upload Submission">
+    {{ form.submit(class_="btn btn-primary") }}
   </div>
 </form>
 {% endblock %}

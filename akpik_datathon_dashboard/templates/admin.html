@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style>
+  td:nth-child(3) {
+    font-family: monospace;
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<h1>AKPIK Datathon 2023 – Admin Page</h1>
+
+{% for field, errors in form.errors.items() %}
+<div class="alert alert-danger">
+    {{ form[field].label }}: {{ ', '.join(errors) }}
+</div>
+{% endfor %}
+
+<form method="POST" class="mt-3">
+  {{ form.hidden_tag() }}
+  <div>
+  {{ form.group_name.label }} {{ form.group_name(class_="form-control") }}
+  </div>
+  <div class="mt-3">
+    {{ form.submit(class_="btn btn-primary") }}
+  </div>
+</form>
+
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Group</th>
+      <th scope="col">Token</th>
+    </tr>
+  </thead>
+  {% for group in groups %}
+  <tr>
+    <th scope="row">{{ loop.index }}</th>
+    <td>{{ group.name }}</td>
+    <td>{{ group.token }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

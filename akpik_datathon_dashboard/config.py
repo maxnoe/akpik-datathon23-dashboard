@@ -20,3 +20,6 @@ class Config:
 
     # limit upload size to 100 kb
     MAX_CONTENT_LENGTH = 100 * 1024
+
+    ADMIN_USER = os.getenv("AKPIK_ADMIN_USER", "admin")
+    ADMIN_PASSWORD = os.environ["AKPIK_ADMIN_PASSWORD"]

@@ -31,10 +31,20 @@
     </header>
     {% endblock %}
 
-    <main class="container mb-3">
+    <main class="container mb-3 mt-3">
       {% block main %}
       {% endblock %}
     </main>
+
+    <footer class="container-fluid mt-auto bg-secondary text-center">
+      <div class="mx-auto">
+        {% if current_user.is_authenticated %}
+        <a class="link-light" href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+        <a class="link-light" href="{{ url_for('auth.login') }}">Organizer Login</a>
+        {% endif %}
+      </div>
+    </footer>
 
     {% block scripts %}
     {% endblock %}

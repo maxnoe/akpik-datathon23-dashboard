@@ -16,6 +16,7 @@ flask-sqlalchemy = "^3.0.3"
 flask-migrate = "^4.0.4"
 celery = {extras = ["redis"], version = "^5.2.7"}
 tensorflow = "2.9.3"
+flask-login = "^0.6.2"
 
 
 [tool.poetry.group.deploy.dependencies]

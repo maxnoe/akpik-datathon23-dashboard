@@ -1,13 +1,14 @@
 from flask import Blueprint, current_app, flash, redirect, render_template, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, ValidationError
+from flask_login import login_required
 from werkzeug.utils import secure_filename
 from wtforms import StringField
 from wtforms.validators import DataRequired
 import numpy as np
 from datetime import datetime, timezone
 
-from .db import Submission, db
+from .db import Submission, Group, db
 from .tasks import score_submission
 
 
@@ -16,8 +17,13 @@ dashboard = Blueprint("dashboard", __name__)
 
 
 class SubmissionForm(FlaskForm):
-    group_name = StringField("Group Name", [DataRequired()])
+    token = StringField("Submission Token", [DataRequired()])
     submission = FileField("Training Indices Numpy File", validators=[FileRequired()])
+
+    def validate_token(self, token: StringField):
+        group = db.session.query(Group).filter_by(token=token.data).first()
+        if group is None:
+            raise ValidationError("Invalid Submission Token")
 
     def validate_submission(self, submission: FileField):
         file_storage = submission.data
@@ -62,12 +68,15 @@ def index():
     return render_template("index.html", submissions=submissions)
 
 
-@dashboard.route("/submission", methods=["GET", "POST"])
+@dashboard.route("/submission/", methods=["GET", "POST"])
 def submission():
     form = SubmissionForm()
     if form.validate_on_submit():
         file_storage = form.submission.data
-        group_name = form.group_name.data
+
+        group = db.session.query(Group).filter_by(token=form.token.data).one()
+
+        group_name = group.name
 
         now = datetime.now(timezone.utc)
         timestamp = now.isoformat()
