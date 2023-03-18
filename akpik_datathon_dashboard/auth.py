@@ -47,7 +47,7 @@ def login():
                 abort(401)
 
             login_user(user)
-            return redirect(request.args.get("next") or url_for("admin.admin_page"))
+            return redirect(url_for(request.args.get("next", "admin.admin_page")))
 
         else:
             # if form was posted but is not valid we abort with 401
@@ -61,3 +61,8 @@ def logout():
     logout_user()
     return redirect('/')
 
+
+@login_manager.unauthorized_handler
+def handle_needs_login():
+    flash("You have to be logged in to access this page.", category="danger")
+    return redirect(url_for('auth.login', next=request.endpoint))
