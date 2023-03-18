@@ -14,6 +14,7 @@ from .tasks import score_submission
 dashboard = Blueprint("dashboard", __name__)
 
 
+
 class SubmissionForm(FlaskForm):
     group_name = StringField("Group Name", [DataRequired()])
     submission = FileField("Training Indices Numpy File", validators=[FileRequired()])
@@ -39,6 +40,14 @@ class SubmissionForm(FlaskForm):
             raise ValidationError(f"Data must have shape (10000, ), got {data.shape}")
 
 
+@dashboard.errorhandler(413)
+def request_entity_too_large(error):
+    flash(
+        "Your upload is too large."
+        "Only upload the *indices* stored with the <pre>export_submission</pre> function",
+        category="danger",
+    )
+    return redirect(url_for("dashboard.submission"))
 
 
 @dashboard.route("/")
