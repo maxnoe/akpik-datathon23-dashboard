@@ -72,35 +72,37 @@ def index():
 
 @dashboard.route("/submission/", methods=["GET", "POST"])
 def submission():
-    form = SubmissionForm()
-    if form.validate_on_submit():
-        file_storage = form.submission.data
+    # form = SubmissionForm()
+    # if form.validate_on_submit():
+    #     file_storage = form.submission.data
 
-        group = db.session.query(Group).filter_by(token=form.token.data).one()
+    #     group = db.session.query(Group).filter_by(token=form.token.data).one()
 
-        group_name = group.name
+    #     group_name = group.name
 
-        now = datetime.now(timezone.utc)
-        timestamp = now.isoformat()
+    #     now = datetime.now(timezone.utc)
+    #     timestamp = now.isoformat()
 
-        base = current_app.config['DATA_PATH']
+    #     base = current_app.config['DATA_PATH']
 
-        name = secure_filename(f"submission_{group_name}_{timestamp}.npy")
-        path = base / "submissions" / secure_filename(group_name) / name
+    #     name = secure_filename(f"submission_{group_name}_{timestamp}.npy")
+    #     path = base / "submissions" / secure_filename(group_name) / name
 
-        path.parent.mkdir(exist_ok=True, parents=True)
-        file_storage.save(path)
+    #     path.parent.mkdir(exist_ok=True, parents=True)
+    #     file_storage.save(path)
 
-        submission = Submission(
-            group_name=group_name,
-            filename=str(path.relative_to(base)),
-            timestamp=now,
-        )
-        db.session.add(submission)
-        db.session.commit()
+    #     submission = Submission(
+    #         group_name=group_name,
+    #         filename=str(path.relative_to(base)),
+    #         timestamp=now,
+    #     )
+    #     db.session.add(submission)
+    #     db.session.commit()
 
-        score_submission.delay(submission.id)
+    #     score_submission.delay(submission.id)
 
-        flash("Submission added!", category="success")
-        return redirect(url_for("dashboard.index"))
-    return render_template("submission.html", form=form)
+    #     flash("Submission added!", category="success")
+    #     return redirect(url_for("dashboard.index"))
+    # return render_template("submission.html", form=form)
+    flash("The competition is finished. Uploads no longer possible!", category="danger")
+    return redirect(url_for("dashboard.index"))

@@ -28,9 +28,11 @@
             <li class="nav-item">
               <a class="nav-link {% if request.path == url_for('dashboard.index') %}active{% endif %} " aria-current="page" href="{{ url_for('dashboard.index') }}">Score Board</a>
             </li>
+            {#
             <li class="nav-item">
               <a class="nav-link {% if request.path == url_for('dashboard.submission') %}active{% endif %} " aria-current="page" href="{{ url_for('dashboard.submission') }}">Submission Upload</a>
             </li>
+            #}
             {% if current_user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link {% if request.path == url_for('admin.admin_page') %}active{% endif %} " aria-current="page" href="{{ url_for('admin.admin_page') }}">Admin</a>
