@@ -32,7 +32,7 @@
     <td>{{ submission.timestamp.replace(tzinfo=utc).astimezone(timezone).strftime("%Y-%m-%d %H:%M:%S") }}</td>
     <td>
       {% if submission.score is not none %}
-        {{ '%.4f' | format(submission.score) }}
+        {{ '%.3f' | format(submission.score) }}
       {% else %}
         Awaiting scoring...
       {% endif %}
