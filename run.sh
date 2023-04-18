@@ -5,4 +5,4 @@ set -e
 flask db upgrade
 
 # start the server
-gunicorn --bind 0.0.0.0:$PORT "akpik_datathon_dashboard:create_app()"
+waitress-serve --host 0.0.0.0 --port $PORT --call "akpik_datathon_dashboard:create_app"
